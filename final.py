@@ -57,7 +57,6 @@ def process_image(image_path):
             voltage = detection[1]
             break
         else:
-            voltage = 0
             break
 
 
