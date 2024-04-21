@@ -28,13 +28,9 @@ while True:
     result = reader.readtext(img, allowlist ='0123456789')
 
     # Only extract 3 digit numbers from result
-    result = [item for item in result if item[1].isdigit() and len(item[1]) == 3]
+    
 
     # Print the extracted text
     for detection in result:
         text = detection[1]
-        # Write to CSV
-        with open('data.csv', 'a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow([text])
         print(text)

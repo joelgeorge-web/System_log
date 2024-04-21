@@ -18,8 +18,12 @@ if not os.path.isfile('data.csv'):
         writer = csv.writer(file)
         writer.writerow(["SI No", "Red", "Green", "Blue", "Voltage"])
 
-# Initialize serial number for CSV
-serial_number = 1
+# Initialize serial number for CSV after fnding the last serial number in the data.csv file and adding 1 to it
+with open('data.csv', 'r') as file:
+    reader = csv.reader(file)
+    for row in reader:
+        pass
+    serial_number = int(row[0]) + 1 if row else 1
 
 # EasyOCR reader
 reader = easyocr.Reader(['en'])  
@@ -43,11 +47,20 @@ def process_image(image_path):
 
     # OCR Voltage Reading
     result = reader.readtext(img, allowlist='0123456789')
+    result = [item for item in result if item[1].isdigit() and len(item[1]) == 3]
     voltage = None
     for detection in result:
-        if detection[1].isdigit() and len(detection[1]) == 3:
+        print(detection[1])
+        if detection[1] > str(250):
+            voltage = '1' + detection[1][1:]
+        elif detection[1] > str(100):
             voltage = detection[1]
-            break  # Take the first 3-digit number
+            break
+        else:
+            voltage = 0
+            break
+
+
 
     # Write to CSV 
     with open('data.csv', 'a', newline='') as file:
