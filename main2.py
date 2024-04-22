@@ -4,6 +4,7 @@ from PIL import Image
 import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.models import load_model
+import numpy as np
 
 # Load your custom model
 model_path = "model_weights.h5"
@@ -44,5 +45,6 @@ if picture:
     # Make predictions
     predictions = loaded_model.predict(img_array)
     print(predictions)
-
+    print(classes[np.argmax(predictions)])
     st.text(f"Predicted Class: {predictions}")
+    
